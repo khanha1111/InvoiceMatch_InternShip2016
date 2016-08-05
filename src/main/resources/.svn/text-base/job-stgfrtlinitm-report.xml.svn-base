@@ -1,0 +1,78 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+	http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="reportstgfrtlinitm" class="com.mrv.intern.invoicematch.model.StgVendInvFrtLinItmVO" />
+
+	<batch:job id="reportJobstgfrtlinitm">
+		<batch:step id="step1stgfrtlinitm">
+			<batch:tasklet allow-start-if-complete="true">
+				<batch:chunk reader="cvsFileItemReaderstgfrtlinitm"
+					processor="itemProcessorstgfrtlinitm" writer="mysqlItemWriterstgfrtlinitm"
+					commit-interval="1">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+	<bean id="itemProcessorstgfrtlinitm"
+		class="com.mrv.intern.invoicematch.batch.ItemProcessorstgfrtlinitm"></bean>
+	<bean id="cvsFileItemReaderstgfrtlinitm" class="org.springframework.batch.item.file.FlatFileItemReader">
+
+		<!-- Read a csv file -->
+		<property name="resource" value="classpath:STG_VEND_INV_FRT_LIN_ITM.csv" />
+
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<!-- split it -->
+				<property name="lineTokenizer">
+					<bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="names"
+							value="vendInvNbr,vendTrkgId,invTs,frtPoNbr,vendPoShpCstAmt" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<!-- return back to reader, rather than a mapped object. -->
+					<!-- <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" 
+						/> -->
+					<!-- map to an object -->
+					<bean
+						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="prototypeBeanName" value="reportstgfrtlinitm" />
+					</bean>
+				</property>
+
+			</bean>
+		</property>
+
+	</bean>
+
+	<bean id="mysqlItemWriterstgfrtlinitm"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>            
+            <![CDATA[        
+            	insert into INTERNSHIP.STG_VEND_INV_FRT_LIN_ITM(VEND_INV_NBR, VEND_TRKG_ID, INV_TS, FRT_PO_NBR, VEND_PO_SHP_CST_AMT) 
+				values (?,?,?,?,?)
+            ]]>
+			</value>
+		</property>
+		<!-- It will take care matching between object property and sql name parameter -->
+		<property name="itemSqlParameterSourceProvider">
+			<bean
+				class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+		</property>
+		<property name="ItemPreparedStatementSetter">
+			<bean
+				class="com.mrv.intern.invoicematch.batch.ItemPreparedStatementSetterInvoiceStgFrtLinItm" />
+		</property>
+
+	</bean>
+
+</beans>

@@ -1,0 +1,40 @@
+10
+
+dir
+347
+http://10.10.30.50/svn/MRV_Internship_2016/InvoiceMatch_InternShip2016/src/main/webapp/resources/font-awesome
+http://10.10.30.50/svn/MRV_Internship_2016
+
+
+
+2016-07-11T02:27:31.160977Z
+79
+phuocnguyen
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+73372513-79ea-f54f-bc41-a18057966f85
+
+css
+dir
+
+fonts
+dir
+
+less
+dir
+
+scss
+dir
+

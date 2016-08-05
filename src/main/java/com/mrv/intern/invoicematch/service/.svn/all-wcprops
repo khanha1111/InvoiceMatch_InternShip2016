@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/MRV_Internship_2016/!svn/ver/346/InvoiceMatch_InternShip2016/src/main/java/com/mrv/intern/invoicematch/service
+END
+PutGetService.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/MRV_Internship_2016/!svn/ver/130/InvoiceMatch_InternShip2016/src/main/java/com/mrv/intern/invoicematch/service/PutGetService.java
+END
+SeachInvoiceService.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/MRV_Internship_2016/!svn/ver/346/InvoiceMatch_InternShip2016/src/main/java/com/mrv/intern/invoicematch/service/SeachInvoiceService.java
+END
+InvoiceService.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/MRV_Internship_2016/!svn/ver/112/InvoiceMatch_InternShip2016/src/main/java/com/mrv/intern/invoicematch/service/InvoiceService.java
+END
+InsertVoService.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/MRV_Internship_2016/!svn/ver/206/InvoiceMatch_InternShip2016/src/main/java/com/mrv/intern/invoicematch/service/InsertVoService.java
+END
+ImportInvoiceData.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/MRV_Internship_2016/!svn/ver/309/InvoiceMatch_InternShip2016/src/main/java/com/mrv/intern/invoicematch/service/ImportInvoiceData.java
+END

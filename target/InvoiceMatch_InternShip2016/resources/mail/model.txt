@@ -1,0 +1,57 @@
+package com.mrv.intern.invoicematch.model;
+
+public class SearchInvoiceMatch {
+	String invoiceID;
+	String invoiceStatus;
+	String invoiceType;
+	int invoiceAmt;
+	String trackingID;
+	String orderID;
+	String venderID;
+	
+	public String getInvoiceID() {
+		return invoiceID;
+	}
+	public void setInvoiceID(String invoiceID) {
+		this.invoiceID = invoiceID;
+	}
+	public String getInvoiceStatus() {
+		return invoiceStatus;
+	}
+	public void setInvoiceStatus(String invoiceStatus) {
+		this.invoiceStatus = invoiceStatus;
+	}
+	public String getInvoiceType() {
+		return invoiceType;
+	}
+	public void setInvoiceType(String invoiceType) {
+		this.invoiceType = invoiceType;
+	}
+	public int getInvoiceAmt() {
+		return invoiceAmt;
+	}
+	public void setInvoiceAmt(int invoiceAmt) {
+		this.invoiceAmt = invoiceAmt;
+	}
+	public String getTrackingID() {
+		return trackingID;
+	}
+	public void setTrackingID(String trackingID) {
+		this.trackingID = trackingID;
+	}
+	public String getOrderID() {
+		return orderID;
+	}
+	public void setOrderID(String orderID) {
+		this.orderID = orderID;
+	}
+	public String getVenderID() {
+		return venderID;
+	}
+	public void setVenderID(String venderID) {
+		this.venderID = venderID;
+	}
+	
+	
+	
+}

@@ -1,0 +1,26 @@
+package com.mrv.intern.invoicematch.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.mrv.intern.invoicematch.dao.PutGetDao;
+import com.mrv.intern.invoicematch.model.SearchInvoiceMatch;
+
+@Service
+public class PutGetService {
+	private SearchInvoiceMatch searchInvoiceMatch;
+	@Autowired
+	private PutGetDao putGetDao;
+
+	public List<SearchInvoiceMatch> invoiceMatchs(String venderID, String invoiceID, String trackingID, String orderID) {
+		return putGetDao.searchInvoiceMatch(venderID, invoiceID, trackingID, orderID);
+
+	}
+	public SearchInvoiceMatch get(String venderID){
+		return putGetDao.get(venderID);
+	}
+	public List<SearchInvoiceMatch> list(){
+		return putGetDao.list();
+	}
+}

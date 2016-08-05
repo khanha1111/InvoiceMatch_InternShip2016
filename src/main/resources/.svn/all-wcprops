@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/MRV_Internship_2016/!svn/ver/331/InvoiceMatch_InternShip2016/src/main/resources
+END
+job-stgpolinitm-report.xml
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/MRV_Internship_2016/!svn/ver/331/InvoiceMatch_InternShip2016/src/main/resources/job-stgpolinitm-report.xml
+END
+database.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/MRV_Internship_2016/!svn/ver/79/InvoiceMatch_InternShip2016/src/main/resources/database.xml
+END
+job-stgpo-report.xml
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/MRV_Internship_2016/!svn/ver/331/InvoiceMatch_InternShip2016/src/main/resources/job-stgpo-report.xml
+END
+STG_VEND_INV_FRT_LIN_ITM.csv
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/MRV_Internship_2016/!svn/ver/280/InvoiceMatch_InternShip2016/src/main/resources/STG_VEND_INV_FRT_LIN_ITM.csv
+END
+STG_VEND_INV_PO.csv
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/MRV_Internship_2016/!svn/ver/280/InvoiceMatch_InternShip2016/src/main/resources/STG_VEND_INV_PO.csv
+END
+job-stgfrtlinitm-report.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/MRV_Internship_2016/!svn/ver/331/InvoiceMatch_InternShip2016/src/main/resources/job-stgfrtlinitm-report.xml
+END
+context.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/MRV_Internship_2016/!svn/ver/163/InvoiceMatch_InternShip2016/src/main/resources/context.xml
+END
+STG_VEND_INV_PO_LIN_ITM.csv
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/MRV_Internship_2016/!svn/ver/280/InvoiceMatch_InternShip2016/src/main/resources/STG_VEND_INV_PO_LIN_ITM.csv
+END
+job-select-stginvhrd-report.xml
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/MRV_Internship_2016/!svn/ver/331/InvoiceMatch_InternShip2016/src/main/resources/job-select-stginvhrd-report.xml
+END
+job-report.xml
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/MRV_Internship_2016/!svn/ver/292/InvoiceMatch_InternShip2016/src/main/resources/job-report.xml
+END
+Properties.properties
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/MRV_Internship_2016/!svn/ver/77/InvoiceMatch_InternShip2016/src/main/resources/Properties.properties
+END
+job-select-vendinvhdr-report.xml
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/MRV_Internship_2016/!svn/ver/331/InvoiceMatch_InternShip2016/src/main/resources/job-select-vendinvhdr-report.xml
+END
+STG_VEND_INV_HDR.csv
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/MRV_Internship_2016/!svn/ver/280/InvoiceMatch_InternShip2016/src/main/resources/STG_VEND_INV_HDR.csv
+END

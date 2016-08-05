@@ -1,0 +1,115 @@
+
+package com.mrv.intern.invoicematch.controller;
+
+<<<<<<< .mine
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+=======
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
+>>>>>>> .r79
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mrv.intern.invoicematch.model.SearchInvoiceMatch;
+import com.mrv.intern.invoicematch.service.PutGetService;
+
+import com.mrv.intern.invoicematch.utils.Constants;
+
+@Controller
+public class PutGetController {
+<<<<<<< .mine
+	@Autowired
+	private PutGetService putGetService;
+
+	@RequestMapping(value = "/")
+	public ModelAndView listInVoice(ModelAndView model) throws IOException {
+		model.addObject("listInvoice", null);
+		model.setViewName("home");
+
+		return model;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/searchInvoiceMatch", method = RequestMethod.POST)
+	public String searchInvoiceMatch(@RequestParam() String venderID, @RequestParam() String invoiceID,
+			@RequestParam() String trackingID, @RequestParam() String orderID) throws IOException {
+		List<SearchInvoiceMatch> lstsearch = new ArrayList<SearchInvoiceMatch>();
+		if (venderID.equals("VENDER") && invoiceID.equals("") && trackingID.equals("") && orderID.equals("")) {
+			lstsearch = putGetService.list();
+		} else {
+			lstsearch = putGetService.invoiceMatchs(venderID, invoiceID, trackingID, orderID);
+		}
+=======
+	@RequestMapping(value="/")
+	public String index() {
+			ArrayList<Job> job = new ArrayList<Job>();
+			JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
+			Job jobitm1 = (Job) context.getBean("reportJobhdr");
+			Job jobitm2 = (Job) context.getBean("reportJobstgpo");
+			Job jobitm4 = (Job) context.getBean("reportJobstgpolinitm");
+			Job jobitm3 = (Job) context.getBean("reportJobstgfrtlinitm");
+			job.add(jobitm1);
+			job.add(jobitm2);
+			job.add(jobitm3);
+			job.add(jobitm4);
+//			Job jobitm = (Job) context.getBean("reportJob");
+			for (int i = 0; i < job.size(); i++){
+				try {
+					
+					JobParameters jobParameters = 
+							  new JobParametersBuilder()
+							  .addLong(Constants.KEY_TIME,System.currentTimeMillis()).toJobParameters();
+					
+					JobExecution execution = jobLauncher.run(job.get(i), jobParameters );
+					System.out.println(Constants.KEY_STT + execution.getStatus());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+>>>>>>> .r79
+//			Job insertJob = (Job) context.getBean("reportJobisvendinvpo");
+//			try {
+//
+//				
+//				JobParameters jobParameters = 
+//						  new JobParametersBuilder()
+//						  .addLong("time",System.currentTimeMillis()).toJobParameters();
+//				
+//				JobExecution execution = jobLauncher.run(insertJob, jobParameters );
+//				System.out.println("Exit Status : " + execution.getStatus());
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+
+<<<<<<< .mine
+		String json = new Gson().toJson(lstsearch);
+		JsonObject jsonObj = new JsonObject();
+		JsonParser parser = new JsonParser();
+		JsonArray o = parser.parse(json).getAsJsonArray();
+		jsonObj.add("data", o);
+		System.out.println("HTTPS:" + json);
+
+		return jsonObj.toString();
+=======
+		return "home";
+>>>>>>> .r79
+	}
+
+}

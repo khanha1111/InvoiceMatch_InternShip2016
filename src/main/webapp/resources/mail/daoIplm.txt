@@ -1,0 +1,310 @@
+package com.mrv.intern.invoicematch.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import com.mrv.intern.invoicematch.model.SearchInvoiceMatch;
+
+@Repository()
+public class PutgetDaoImpl implements PutGetDao {
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public void setDataSource(@Qualifier("dataSource") DataSource dataSource) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+
+	@Override
+	public SearchInvoiceMatch get(String venderID) {
+		String sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+				+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+				+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+				+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR" + "WHERE dr.VEND_ID =" + venderID
+				+ "UNION " + "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+				+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+				+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+				+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+				+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+				+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR" + "WHERE dr.VEND_ID =" + venderID;
+		return jdbcTemplate.query(sql, new ResultSetExtractor<SearchInvoiceMatch>() {
+
+			@Override
+			public SearchInvoiceMatch extractData(ResultSet rs) throws SQLException, DataAccessException {
+				if (rs.next()) {
+					SearchInvoiceMatch invoice = new SearchInvoiceMatch();
+					invoice.setVenderID(rs.getString("VEND_ID"));
+					invoice.setInvoiceID(rs.getString("VEND_INV_NBR"));
+					invoice.setTrackingID(rs.getString("VEND_TRKG_ID"));
+					invoice.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+					invoice.setInvoiceType(rs.getString("INV_TYP_CD"));
+					invoice.setInvoiceStatus(rs.getString("INV_TS"));
+					invoice.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+					return invoice;
+				}
+
+				return null;
+			}
+
+		});
+	}
+
+	@Override
+	public List<SearchInvoiceMatch> list() {
+		String sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+				+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+				+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+				+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR" + "UNION " + "SELECT dr.VEND_ID,"
+				+ "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,'' as VEND_TRKG_ID,"
+				+ "po.VEND_ORD_HDR_ID" + "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+				+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+				+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+				+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR";
+		List<SearchInvoiceMatch> listInvoice = jdbcTemplate.query(sql, new RowMapper<SearchInvoiceMatch>() {
+
+			@Override
+			public SearchInvoiceMatch mapRow(ResultSet rs, int rowNum) throws SQLException {
+				SearchInvoiceMatch invoiceMatch = new SearchInvoiceMatch();
+
+				invoiceMatch.setVenderID(rs.getString("VEND_ID"));
+				invoiceMatch.setInvoiceID(rs.getString("VEND_INV_NBR"));
+				invoiceMatch.setTrackingID(rs.getString("VEND_TRKG_ID"));
+				invoiceMatch.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+				invoiceMatch.setInvoiceType(rs.getString("INV_TYP_CD"));
+				invoiceMatch.setInvoiceStatus(rs.getString("INV_TS"));
+				invoiceMatch.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+				return invoiceMatch;
+			}
+
+		});
+		return listInvoice;
+	}
+
+	@Override
+	public List<SearchInvoiceMatch> searchInvoiceMatch(String invoiceID, String venderID, String trackingID,
+			String orderID) {
+		String sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+				+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+				+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+				+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+				+ "WHERE dr.VEND_ID = ? AND imt.VEND_TRKG_ID = ?" + "WHERE " + "UNION " + "SELECT dr.VEND_ID,"
+				+ "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,'' as VEND_TRKG_ID,"
+				+ "po.VEND_ORD_HDR_ID" + "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+				+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+				+ " LEFT JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+				+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE dr.VEND_INV_NBR = ? AND po.VEND_ORD_HDR_ID = ?";
+		Object[] agrs = new Object[] { venderID, invoiceID, trackingID, orderID };
+		if (venderID.equals("VENDER") || invoiceID.equals("") || trackingID.equals("") || orderID.equals("")) {
+			if (invoiceID.equals("") && venderID.equals("VENDER")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+						+ "WHERE dr.VEND_INV_NBR = ?";
+				agrs = new Object[] { invoiceID };
+			} else if (invoiceID.equals("") && venderID.equals("VENDER")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+						+ "WHERE imt.VEND_TRKG_ID = ?";
+				agrs = new Object[] { trackingID };
+			} else if (invoiceID.equals("") && trackingID.equals("")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR" + "WHERE dr.VEND_ID = ?";
+				agrs = new Object[] { venderID };
+			} else if (invoiceID.equals("") && venderID.equals("VENDER")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+						+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+						+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+						+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+						+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE po.VEND_ORD_HDR_ID = ?";
+				agrs = new Object[] { orderID };
+			} else if (invoiceID.equals("")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+						+ "WHERE dr.VEND_ID = ? AND imt.VEND_TRKG_ID = ?";
+				agrs = new Object[] { venderID, trackingID };
+			} else if (invoiceID.equals("")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+						+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+						+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+						+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+						+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE dr.VEND_ID=? AND po.VEND_ORD_HDR_ID = ?";
+				agrs = new Object[] { venderID, orderID };
+			} else if (trackingID.equals("")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+						+ "WHERE dr.VEND_ID = ? AND dr.VEND_INV_NBR = ?";
+				agrs = new Object[] { venderID, invoiceID };
+			} else if (orderID.equals("")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+						+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+						+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+						+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+						+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE dr.VEND_ID=? AND dr.VEND_INV_NBR = ?";
+				agrs = new Object[] { venderID, invoiceID };
+			} else if (venderID.equals("Gender")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+						+ "WHERE imt.VEND_TRKG_ID = ? AND dr.VEND_INV_NBR = ?";
+				agrs = new Object[] { trackingID, invoiceID };
+			} else if (venderID.equals("")) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+						+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+						+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+						+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+						+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE po.VEND_ORD_HDR_ID =? AND dr.VEND_INV_NBR = ?";
+				agrs = new Object[] { orderID, invoiceID };
+			}
+		}
+		List<SearchInvoiceMatch> listInvoice = jdbcTemplate.query(sql, agrs, new RowMapper<SearchInvoiceMatch>() {
+
+			@Override
+			public SearchInvoiceMatch mapRow(ResultSet rs, int rowNum) throws SQLException {
+				SearchInvoiceMatch invoice = new SearchInvoiceMatch();
+
+				invoice.setVenderID(rs.getString("VEND_ID"));
+				invoice.setInvoiceID(rs.getString("VEND_INV_NBR"));
+				invoice.setTrackingID(rs.getString("VEND_TRKG_ID"));
+				invoice.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+				invoice.setInvoiceType(rs.getString("INV_TYP_CD"));
+				invoice.setInvoiceStatus(rs.getString("INV_TS"));
+				invoice.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+				return invoice;
+			}
+
+		});
+
+		if (listInvoice.size() == 0) {
+			sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+					+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+					+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+					+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR" + "WHERE dr.VEND_ID = ?";
+			agrs = new Object[] { venderID };
+			listInvoice = jdbcTemplate.query(sql, agrs, new RowMapper<SearchInvoiceMatch>() {
+
+				@Override
+				public SearchInvoiceMatch mapRow(ResultSet rs, int rowNum) throws SQLException {
+					SearchInvoiceMatch invoice = new SearchInvoiceMatch();
+
+					invoice.setVenderID(rs.getString("VEND_ID"));
+					invoice.setInvoiceID(rs.getString("VEND_INV_NBR"));
+					invoice.setTrackingID(rs.getString("VEND_TRKG_ID"));
+					invoice.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+					invoice.setInvoiceType(rs.getString("INV_TYP_CD"));
+					invoice.setInvoiceStatus(rs.getString("INV_TS"));
+					invoice.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+					return invoice;
+				}
+
+			});
+			if (listInvoice.size() == 0) {
+				sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD,dr.VEND_INV_NBR," + "dr.INV_TS," + "dr.INV_AMT,"
+						+ "imt.VEND_TRKG_ID," + "'' VEND_ORD_HDR_ID"
+						+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_FRT_LIN_ITM imt"
+						+ "on dr.VEND_ID=imt.VEND_ID and dr.VEND_INV_NBR=imt.VEND_INV_NBR"
+						+ "WHERE imt.VEND_TRKG_ID = ?";
+				agrs = new Object[] { trackingID };
+				listInvoice = jdbcTemplate.query(sql, agrs, new RowMapper<SearchInvoiceMatch>() {
+
+					@Override
+					public SearchInvoiceMatch mapRow(ResultSet rs, int rowNum) throws SQLException {
+						SearchInvoiceMatch invoice = new SearchInvoiceMatch();
+
+						invoice.setVenderID(rs.getString("VEND_ID"));
+						invoice.setInvoiceID(rs.getString("VEND_INV_NBR"));
+						invoice.setTrackingID(rs.getString("VEND_TRKG_ID"));
+						invoice.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+						invoice.setInvoiceType(rs.getString("INV_TYP_CD"));
+						invoice.setInvoiceStatus(rs.getString("INV_TS"));
+						invoice.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+						return invoice;
+					}
+
+				});
+				if (listInvoice.size() == 0) {
+					sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+							+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+							+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+							+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+							+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm" + "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+							+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE dr.VEND_INV_NBR = ?";
+					agrs = new Object[] { venderID };
+					listInvoice = jdbcTemplate.query(sql, agrs, new RowMapper<SearchInvoiceMatch>() {
+
+						@Override
+						public SearchInvoiceMatch mapRow(ResultSet rs, int rowNum) throws SQLException {
+							SearchInvoiceMatch invoice = new SearchInvoiceMatch();
+
+							invoice.setVenderID(rs.getString("VEND_ID"));
+							invoice.setInvoiceID(rs.getString("VEND_INV_NBR"));
+							invoice.setTrackingID(rs.getString("VEND_TRKG_ID"));
+							invoice.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+							invoice.setInvoiceType(rs.getString("INV_TYP_CD"));
+							invoice.setInvoiceStatus(rs.getString("INV_TS"));
+							invoice.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+							return invoice;
+						}
+
+					});
+					if (listInvoice.size() == 0) {
+						sql = "SELECT dr.VEND_ID," + "dr.INV_TYP_CD," + "dr.VEND_INV_NBR," + "dr.INV_TS,"
+								+ "dr.INV_AMT,'' as VEND_TRKG_ID," + "po.VEND_ORD_HDR_ID"
+								+ "FROM INTERNSHIP.VEND_INV_HDR dr LEFT JOIN INTERNSHIP.VEND_INV_PO po"
+								+ "on dr.VEND_ID= po.VEND_ID and dr.VEND_INV_NBR = po.VEND_INV_NBR"
+								+ " JOIN INTERNSHIP.VEND_INV_PO_LIN_ITM itm"
+								+ "ON itm.VEND_ORD_HDR_ID = po.VEND_ORD_HDR_ID"
+								+ "and dr.VEND_INV_NBR=itm.VEND_INV_NBR WHERE po.VEND_ORD_HDR_ID = ?";
+						agrs = new Object[] { orderID };
+						listInvoice = jdbcTemplate.query(sql, agrs, new RowMapper<SearchInvoiceMatch>() {
+
+							@Override
+							public SearchInvoiceMatch mapRow(ResultSet rs, int rowNum) throws SQLException {
+								SearchInvoiceMatch invoice = new SearchInvoiceMatch();
+
+								invoice.setVenderID(rs.getString("VEND_ID"));
+								invoice.setInvoiceID(rs.getString("VEND_INV_NBR"));
+								invoice.setTrackingID(rs.getString("VEND_TRKG_ID"));
+								invoice.setOrderID(rs.getString("VEND_ORD_HDR_ID"));
+								invoice.setInvoiceType(rs.getString("INV_TYP_CD"));
+								invoice.setInvoiceStatus(rs.getString("INV_TS"));
+								invoice.setInvoiceAmt(rs.getInt("INV_AMT"));
+
+								return invoice;
+							}
+
+						});
+					}
+				}
+			}
+		}
+		return listInvoice;
+	}
+
+}
