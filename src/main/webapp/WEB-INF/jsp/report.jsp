@@ -71,12 +71,12 @@
 
 		<div class="navbar-collapse collapse" id="menu">
 			<ul class="nav navbar-nav">
-				<li><a href="/InvoiceMatch_InternShip2016">Home</a></li>
+				
 				<li><a href="/InvoiceMatch_InternShip2016/report">Report</a></li>
 				<li><a href="http://www.magrabbit.com/news">News</a></li>
 				<li><a href="http://www.magrabbit.com/about-us">About Us</a></li>
 				<li><a href="http://www.magrabbit.com/contact-us">Contact</a></li>
-				<li id="importData"><a href="">Inport</a></li>
+				<li id="importData"><a href="">Importing</a></li>
 				<li id="matchData"><a href="">Matching</a></li>
 			</ul>
 		</div>
@@ -99,11 +99,11 @@
 				</span>
 			</div>
 
-			<div id="searchReportForm" class="row collapse in">
+			<div id="searchReportForm" class="row collapse in container-fluid container-override">
 			
 				<div class="panel-body">
 				
-					<div class="form-horizontal margin_left">
+					<div class="form-horizontal">
 		
 						<div class="form-group">
 							<label for="invStat" class="col-sm-2 control-label" style="text-align : left">Invoice Status</label>
@@ -186,7 +186,7 @@
 	
 		<div class="footer-panel"style="margin-top: 20px">
 			<div class="footer footer-main">
-				<p class="text-center">&copy; 2015 HEB Grocery Company </p>
+				<p class="text-center">&copy; 2016 MRV Internship Team </p>
 			</div>
 			
 		</div>

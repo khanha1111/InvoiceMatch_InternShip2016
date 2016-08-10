@@ -8,7 +8,7 @@
 <meta name=viewport content=width=device-width initial-scale=1>
 <style type="text/css">
 footer {
-	padding: 10px;
+	padding: 5px;
 	background-color: #DCDCDC;
 }
 </style>
@@ -17,7 +17,6 @@ footer {
 <link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
 <link href="css/responsive.bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/home-style.css" rel="stylesheet">
 <!-- Custom Fonts -->
 <link rel="stylesheet" href="css/invoiceStyle.css">
 <link rel="stylesheet" href="css/invoiceInputStyle.css">
@@ -33,18 +32,16 @@ footer {
 </head>
 <body style="background-color: #fff">
 	<header style="display: inline-block">
-	<div class="panel col-sm-12"
-		style="margin: 0px; border: 0px; padding: 0px;">
+	<div class="panel col-sm-12">
 		<div class="panel-heading">
-			<img src="images/heblogo.png" class="image-header"
-				style="width: 200px; heght: 100px; text-align: left;">
+			<img src="images/logo-heb.png" class="image-header">
 		</div>
 
 	</div>
 	</header>
 
 
-	<div>
+	<div style="margin-top: -10px">
 		<nav class="navbar navbar-inverse" style="color:#fff">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -53,12 +50,11 @@ footer {
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a href="" class="navbar-brand">Invoice Match</a>
+			<a href="/InvoiceMatch_InternShip2016" class="navbar-brand glyphicon glyphicon-home"></a>
 		</div>
 
 		<div class="navbar-collapse collapse" id="menu">
 			<ul class="nav navbar-nav">
-				<li><a href="/InvoiceMatch_InternShip2016">Home</a></li>
 				<li><a href="/InvoiceMatch_InternShip2016/report">Report</a></li>
 				<li><a href="http://www.magrabbit.com/news">News</a></li>
 				<li><a href="http://www.magrabbit.com/about-us">About Us</a></li>
@@ -92,7 +88,7 @@ footer {
 			<div id="search" class="row collapse in">
 
 				<div class="panel-body">
-					<div class="form-horizontal margin_left container-fluid container-override">
+					<div class="form-horizontal container-fluid container-override">
 						<div class="form-group">
 							<label for="invoice" class="col-sm-1 control-label">Invoice</label>
 							<div class="col-sm-5 ">
@@ -121,7 +117,7 @@ footer {
 							
 						</div>
 						<div style="float: right; margin-top: 10px">
-							<button type="submit" class="btn btn-info" id="Searching">
+							<button type="submit" value="submit" class="btn btn-info" id="Searching">
 								<span class="glyphicon glyphicon-search"></span> Search
 							</button>
 						</div>
@@ -131,9 +127,9 @@ footer {
 			</div>
 		</div>
 	
-		<section id="datatable" style="padding-top: 1px;">
-		<div class="container">
-			<div class="row">
+		<section id="datatable" style="padding-top: 50px;padding-bottom: 50px;">
+		<div>
+			<div class="row" style="display: inline">
 				<!-- insert datatable -->
 				<table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 					<thead>
@@ -151,16 +147,18 @@ footer {
 		</section>
 	</div>
 		<footer>
-		<div class="text-center center-block">
-			<p class="txt-railway">© 2015 HEB Grocery Company</p>
-		</div>
+			<div style="height: 4.5em;background-color: #d5dade;color: #fff">
+				<div class="footer footer-main">
+					<p class="text-center">&copy; 2016 MRV Internship Team </p>
+				</div>
+			</div>
 		</footer>
 </body>
 <!--  -->
 <script>
 	$(document).ready(function() {
 		$('#example').DataTable({
-			"bFilter" : false,
+			"bFilter" : true,
 			'ajax' : {
 				method : "POST",
 				url : "/InvoiceMatch_InternShip2016/searchInvoice",
