@@ -31,11 +31,11 @@ public class InsertToMapperDAOImlp  extends BaseDAOImpl implements InsertToMappe
 						
 						VendInvHdrVO vendInvHdr= venderinvHdr;
 						System.out.println("Chek HDR:"+vendInvHdr.getVendId());
-						
-						ps.setLong(1, new Long(vendInvHdr.getVendId()));
+						ps.setBigDecimal(1, new BigDecimal(vendInvHdr.getInvAmt()));
+						ps.setLong(2, new Long(vendInvHdr.getVendId()));
 
-						ps.setString(2, vendInvHdr.getVendInvNbr());
-						ps.setString(3, vendInvHdr.getInvTypCd());
+						ps.setString(3, vendInvHdr.getVendInvNbr());
+						ps.setString(4, vendInvHdr.getInvTypCd());
 					}
 				});
 				
